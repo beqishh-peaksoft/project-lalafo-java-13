@@ -99,6 +99,12 @@ public class User {
         favorites.remove(favorite);
     }
 
+
+    public  void addAnnouncement(Announcement announcement){
+        announcements.add(announcement);
+        System.out.println("Announcement success added!");
+    }
+
     @Override
     public String toString() {
         return "User{" +
