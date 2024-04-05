@@ -3,5 +3,5 @@ package enums;
 public enum Role {
     ADMIN,
     USER,
-    VENDOR
+    VENDOR;
 }
