@@ -6,18 +6,16 @@ public class Announcement {
     private String description;
     private int price;
     private String owner;
-    private Favorite favorite;
 
     public Announcement() {
     }
 
-    public Announcement(Long id, String name, String description, int price, String owner, Favorite favorite) {
+    public Announcement(Long id, String name, String description, int price, String owner) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.owner = owner;
-        this.favorite = favorite;
     }
 
     public Long getId() {
@@ -59,15 +57,7 @@ public class Announcement {
     public void setOwner(String owner) {
         this.owner = owner;
     }
-
-    public Favorite getFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(Favorite favorite) {
-        this.favorite = favorite;
-    }
-
+    
     @Override
     public String toString() {
         return "Announcement{" +
@@ -76,7 +66,6 @@ public class Announcement {
                ", description='" + description + '\'' +
                ", price=" + price +
                ", owner='" + owner + '\'' +
-               ", favorite=" + favorite +
                '}';
     }
 }

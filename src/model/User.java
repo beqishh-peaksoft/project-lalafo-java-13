@@ -13,18 +13,18 @@ public class User {
     private String phoneNumber;
     private Role role;
     private List<Announcement> announcements = new ArrayList<>();
+    private List<Favorite> favorites = new ArrayList<>();
 
     public User() {
     }
 
-    public User(Long id, String firstName, String email, String password, String phoneNumber, Role role, List<Announcement> announcements) {
+    public User(Long id, String firstName, String email, String password, String phoneNumber, Role role) {
         this.id = id;
         this.firstName = firstName;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.role = role;
-        this.announcements = announcements;
     }
 
     public Long getId() {
@@ -79,20 +79,36 @@ public class User {
         return announcements;
     }
 
-    public void setAnnouncements(List<Announcement> announcements) {
-        this.announcements = announcements;
+    public void setAnnouncement(Announcement announcement) {
+        announcements.add(announcement);
+    }
+
+    public void removeAnnouncement(Announcement announcement) {
+        announcements.remove(announcement);
+    }
+
+    public List<Favorite> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorite(Favorite favorite) {
+        favorites.add(favorite);
+    }
+
+    public void removeFavorite(Favorite favorite) {
+        favorites.remove(favorite);
     }
 
     @Override
     public String toString() {
         return "User{" +
-               "id=" + id +
-               ", firstName='" + firstName + '\'' +
-               ", email='" + email + '\'' +
-               ", password='" + password + '\'' +
-               ", phoneNumber='" + phoneNumber + '\'' +
-               ", role=" + role +
-               ", announcements=" + announcements +
-               '}';
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", role=" + role +
+                ", announcements=" + announcements +
+                '}';
     }
 }
