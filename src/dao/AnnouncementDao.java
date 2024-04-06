@@ -10,4 +10,6 @@ public interface AnnouncementDao {
     String updateAnnouncement(Long announcementId, Announcement newAnnouncement);
     String deleteAnnouncement(Long announcementId);
     List<Announcement> getAllAnnouncements(Long userId);
+    List<Announcement> sortByName(String ascOrdesc);
+    List<Announcement> sortByPrice(String ascOrdesc);
 }

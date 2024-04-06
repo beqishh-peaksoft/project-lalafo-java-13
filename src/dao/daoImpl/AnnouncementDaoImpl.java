@@ -6,10 +6,7 @@ import exception.StackOverflowException;
 import model.Announcement;
 import model.User;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class AnnouncementDaoImpl implements AnnouncementDao {
     @Override
@@ -18,7 +15,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
             for (User user : Database.users) {
                 if (user.getId().equals(userId)) {
                     user.setAnnouncement(announcement);
-                    return "Announcement success added!";
+                    return "Объявление упешно добавлено!";
                 }
             }
             throw new StackOverflowException("Произошла ошибка при добавлении объявления: " + announcement);
@@ -37,7 +34,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
                         announcement.setDescription(newAnnouncement.getDescription());
                         announcement.setPrice(newAnnouncement.getPrice());
                         announcement.setOwner(newAnnouncement.getOwner());
-                        return "Announcement success updated!";
+                        return "Объявление успешно обновлено!";
                     }
                 }
             }
@@ -54,7 +51,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
                 for (Announcement announcement : user.getAnnouncements()) {
                     if (announcement.getId().equals(announcementId)) {
                         user.getAnnouncements().remove(announcement);
-                        return "Announcement success deleted!";
+                        return "Объявление успешно удалено!";
                     }
                 }
             }
@@ -73,10 +70,48 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
             if (userOptional.isPresent()) {
                 return userOptional.get().getAnnouncements();
             } else
-                throw new StackOverflowException("User по id:" + userId + "не найдено");
+                throw new StackOverflowException("Пользователь по id: " + userId + " не найдено! ❌");
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
             return null;
         }
+    }
+
+    @Override
+    public List<Announcement> sortByName(String ascOrdesc) {
+        try {
+            for (User user : Database.users) {
+                if (ascOrdesc.equalsIgnoreCase("asc".toLowerCase())) {
+                    user.getAnnouncements().sort(Comparator.comparing(Announcement::getName));
+                    return user.getAnnouncements();
+                } else if (ascOrdesc.equalsIgnoreCase("desc".toLowerCase())) {
+                    user.getAnnouncements().sort(Comparator.comparing(Announcement::getName).reversed());
+                    return user.getAnnouncements();
+                } else
+                    throw new StackOverflowException("Вы должны ввести asc/desc а не это: " + ascOrdesc+"! ❌");
+            }
+        } catch (StackOverflowException e) {
+            System.out.println(e.getMessage());
+        }
+            return null;
+    }
+
+    @Override
+    public List<Announcement> sortByPrice(String ascOrdesc) {
+        try {
+            for (User user : Database.users) {
+                if (ascOrdesc.equalsIgnoreCase("asc".toLowerCase())) {
+                    user.getAnnouncements().sort(Comparator.comparing(Announcement::getPrice));
+                    return user.getAnnouncements();
+                } else if (ascOrdesc.equalsIgnoreCase("desc".toLowerCase())) {
+                    user.getAnnouncements().sort(Comparator.comparing(Announcement::getPrice).reversed());
+                    return user.getAnnouncements();
+                } else
+                    throw new StackOverflowException("Вы должны ввести asc/desc а не это: " + ascOrdesc+"! ❌");
+            }
+        } catch (StackOverflowException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }

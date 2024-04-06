@@ -34,4 +34,14 @@ public class UserServiceImpl implements UserService {
     public String deleteUserById(Long userId) {
         return userDao.deleteUserById(userId);
     }
+
+    @Override
+    public List<User> sortByFirstName(String ascOrdesc) {
+        return userDao.sortByFirstName(ascOrdesc);
+    }
+
+    @Override
+    public List<User> sortByRole(String role) {
+        return userDao.sortByRole(role);
+    }
 }
