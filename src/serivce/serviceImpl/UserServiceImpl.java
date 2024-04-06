@@ -1,17 +1,14 @@
 package serivce.serviceImpl;
 
 import dao.UserDao;
+import dao.daoImpl.UserDaoImpl;
 import model.User;
 import serivce.UserService;
 
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-    private final UserDao userDao;
-
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
-    }
+    UserDao userDao = new UserDaoImpl();
 
     @Override
     public String addUser(User user) {

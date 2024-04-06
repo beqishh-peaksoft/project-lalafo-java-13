@@ -1,6 +1,7 @@
 package serivce.serviceImpl;
 
 import dao.FavoriteDao;
+import dao.daoImpl.FavoriteDaoImpl;
 import exception.StackOverflowException;
 import model.Favorite;
 import serivce.FavoriteService;
@@ -9,11 +10,7 @@ import java.util.List;
 
 public class FavoriteServiceImpl implements FavoriteService {
 
-    private final FavoriteDao favoriteDao;
-
-    public FavoriteServiceImpl(FavoriteDao favoriteDao) {
-        this.favoriteDao = favoriteDao;
-    }
+    FavoriteDao favoriteDao = new FavoriteDaoImpl();
 
     @Override
     public String addFavorite(Long userId, Favorite favorite) throws StackOverflowException {
