@@ -30,4 +30,14 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     public List<Announcement> getAllAnnouncements(Long userId) {
         return announcementDao.getAllAnnouncements(userId);
     }
+
+    @Override
+    public List<Announcement> sortByName(String ascOrdesc) {
+        return announcementDao.sortByName(ascOrdesc);
+    }
+
+    @Override
+    public List<Announcement> sortByPrice(String ascOrdesc) {
+        return announcementDao.sortByPrice(ascOrdesc);
+    }
 }
