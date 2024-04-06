@@ -24,7 +24,7 @@ public class UserDaoImpl implements UserDao {
             if (userOptional.isPresent()) {
                 return userOptional.get();
             } else
-                throw new StackOverflowException("User: " + userId + " Не найдено! ❌");
+                throw new StackOverflowException("Пользователь с id: " + userId + " не найдено! ❌");
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
         }
@@ -48,9 +48,9 @@ public class UserDaoImpl implements UserDao {
                 user.setEmail(newUser.getEmail());
                 user.setPassword(newUser.getPassword());
                 user.setPhoneNumber(newUser.getPhoneNumber());
-                return "User успешно обновлено!: "+user;
+                return "Пользователь успешно обновлено!:✅ "+user;
             } else
-                throw new StackOverflowException("User: " + userId + " Не найдено! ❌");
+                throw new StackOverflowException("Пользователь c id: " + userId + " не найдено! ❌");
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
 
@@ -69,7 +69,7 @@ public class UserDaoImpl implements UserDao {
                 Database.users.remove(user);
                 return "Успешно удалено! ✅";
             } else
-                throw new StackOverflowException(userId + ": Не найдено! ❌");
+                throw new StackOverflowException("Пользователь c id: "+userId + " не найдено! ❌");
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
         }
@@ -86,7 +86,7 @@ public class UserDaoImpl implements UserDao {
                 Database.users.sort(Comparator.comparing(User::getFirstName).reversed());
                 return Database.users;
             } else
-                throw new StackOverflowException("вы должны вести asc/desc а не ето:"+ascOrdesc);
+                throw new StackOverflowException("Вы должны вести asc/desc а не ето:"+ascOrdesc);
         }catch (StackOverflowException e){
             System.out.println(e.getMessage());
             return null;
@@ -114,7 +114,7 @@ public class UserDaoImpl implements UserDao {
                 }
                 return vendor;
             }else
-                throw new StackOverflowException(role+": Такого роля нету уком!❌");
+                throw new StackOverflowException(role+": такого роля нету уком!❌");
         }catch (StackOverflowException e){
             System.out.println(e.getMessage());
         }

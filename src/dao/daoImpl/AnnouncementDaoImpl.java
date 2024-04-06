@@ -15,7 +15,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
             for (User user : Database.users) {
                 if (user.getId().equals(userId)) {
                     user.setAnnouncement(announcement);
-                    return "Announcement success added!";
+                    return "Объявление упешно добавлено!";
                 }
             }
             throw new StackOverflowException("Произошла ошибка при добавлении объявления: " + announcement);
@@ -34,7 +34,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
                         announcement.setDescription(newAnnouncement.getDescription());
                         announcement.setPrice(newAnnouncement.getPrice());
                         announcement.setOwner(newAnnouncement.getOwner());
-                        return "Announcement success updated!";
+                        return "Объявление успешно обновлено!";
                     }
                 }
             }
@@ -51,7 +51,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
                 for (Announcement announcement : user.getAnnouncements()) {
                     if (announcement.getId().equals(announcementId)) {
                         user.getAnnouncements().remove(announcement);
-                        return "Announcement success deleted!";
+                        return "Объявление успешно удалено!";
                     }
                 }
             }
@@ -70,7 +70,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
             if (userOptional.isPresent()) {
                 return userOptional.get().getAnnouncements();
             } else
-                throw new StackOverflowException("User по id:" + userId + "не найдено");
+                throw new StackOverflowException("Пользователь по id: " + userId + " не найдено! ❌");
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
             return null;
@@ -88,7 +88,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
                     user.getAnnouncements().sort(Comparator.comparing(Announcement::getName).reversed());
                     return user.getAnnouncements();
                 } else
-                    throw new StackOverflowException("вы должны вести asc/desc а не ето:" + ascOrdesc);
+                    throw new StackOverflowException("Вы должны ввести asc/desc а не это: " + ascOrdesc+"! ❌");
             }
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
@@ -107,7 +107,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
                     user.getAnnouncements().sort(Comparator.comparing(Announcement::getPrice).reversed());
                     return user.getAnnouncements();
                 } else
-                    throw new StackOverflowException("вы должны вести asc/desc а не ето:" + ascOrdesc);
+                    throw new StackOverflowException("Вы должны ввести asc/desc а не это: " + ascOrdesc+"! ❌");
             }
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
