@@ -21,9 +21,9 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
                     return "Announcement success added!";
                 }
             }
-            return "User не найден!";
-        } catch (Exception e) {
-            return "Произошла ошибка при добавлении объявления: " + announcement;
+            throw new StackOverflowException("Произошла ошибка при добавлении объявления: " + announcement);
+        } catch (StackOverflowException e) {
+            return "";
         }
     }
 
@@ -41,9 +41,9 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
                     }
                 }
             }
-            return "Announcement not found!";
-        } catch (Exception e) {
-            return "Произошла ошибка при обновлении объявления: " + announcementId;
+            throw new StackOverflowException("Произошла ошибка при обновлении объявления: " + announcementId);
+        } catch (StackOverflowException e) {
+            return "";
         }
     }
 
