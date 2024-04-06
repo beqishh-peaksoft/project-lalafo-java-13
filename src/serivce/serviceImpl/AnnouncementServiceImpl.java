@@ -1,6 +1,7 @@
 package serivce.serviceImpl;
 
 import dao.AnnouncementDao;
+import dao.daoImpl.AnnouncementDaoImpl;
 import model.Announcement;
 import serivce.AnnouncementService;
 
@@ -8,11 +9,7 @@ import java.util.List;
 
 public class AnnouncementServiceImpl implements AnnouncementService {
 
-    private final AnnouncementDao announcementDao;
-
-    public AnnouncementServiceImpl(AnnouncementDao announcementDao) {
-        this.announcementDao = announcementDao;
-    }
+    AnnouncementDao announcementDao = new AnnouncementDaoImpl();
 
     @Override
     public String addUserAnnouncement(Long userId, Announcement announcement) {
@@ -30,7 +27,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     }
 
     @Override
-    public List<Announcement> getAllAnnouncements() {
-        return announcementDao.getAllAnnouncements();
+    public List<Announcement> getAllAnnouncements(Long userId) {
+        return announcementDao.getAllAnnouncements(userId);
     }
 }

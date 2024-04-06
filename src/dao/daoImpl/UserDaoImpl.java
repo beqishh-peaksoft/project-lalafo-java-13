@@ -13,18 +13,19 @@ public class UserDaoImpl implements UserDao {
     @Override
     public String addUser(User user) {
         Database.users.add(user);
-        return ""+user+": Успешно добавлено! ✅";
+        return "Успешно добавлено! ✅";
     }
 
     @Override
     public User getUserById(Long userId) {
         try {
-            for (User user : Database.users) {
-                if (user.getId().equals(userId)) {
-                    return user;
-                }
-            }
-            throw new StackOverflowException("User: " + userId + " Не найдено! ❌");
+            Optional<User> userOptional = Database.users.stream()
+                    .filter(user -> user.getId().equals(userId))
+                    .findFirst();
+            if (userOptional.isPresent()) {
+                return userOptional.get();
+            } else
+                throw new StackOverflowException("User: " + userId + " Не найдено! ❌");
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
         }
@@ -48,29 +49,31 @@ public class UserDaoImpl implements UserDao {
                 user.setEmail(newUser.getEmail());
                 user.setPassword(newUser.getPassword());
                 user.setPhoneNumber(newUser.getPhoneNumber());
-            }
-            throw new StackOverflowException("User: " + userId + " Не найдено! ❌");
+                return "User успешно обновлено!: "+user;
+            } else
+                throw new StackOverflowException("User: " + userId + " Не найдено! ❌");
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
 
         }
-        return null;
+        return "";
     }
 
     @Override
     public String deleteUserById(Long userId) {
         try {
-            Optional<User>userOptional = Database.users.stream()
+            Optional<User> userOptional = Database.users.stream()
                     .filter(user -> user.getId().equals(userId))
                     .findFirst();
-            if (userOptional.isPresent()){
+            if (userOptional.isPresent()) {
                 User user = userOptional.get();
                 Database.users.remove(user);
-                return ""+user+": Успешно удалено! ✅";
-            }throw new StackOverflowException(userId+": Не найдено! ❌");
-        }catch (StackOverflowException e){
+                return "Успешно удалено! ✅";
+            } else
+                throw new StackOverflowException(userId + ": Не найдено! ❌");
+        } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return "";
     }
 }

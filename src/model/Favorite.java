@@ -40,7 +40,7 @@ public class Favorite {
 
     @Override
     public String toString() {
-        return "Favorite{" +
+        return "\nFavorite{" +
                "id=" + id +
                ", user=" + user +
                ", announcement=" + announcement +

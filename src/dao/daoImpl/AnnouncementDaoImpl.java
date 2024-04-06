@@ -2,16 +2,18 @@ package dao.daoImpl;
 
 import dao.AnnouncementDao;
 import database.Database;
+import exception.StackOverflowException;
 import model.Announcement;
 import model.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class AnnouncementDaoImpl implements AnnouncementDao {
     @Override
-    public String addUserAnnouncement(Long userId,Announcement announcement) {
+    public String addUserAnnouncement(Long userId, Announcement announcement) {
         try {
             for (User user : Database.users) {
                 if (user.getId().equals(userId)) {
@@ -20,7 +22,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
                 }
             }
             return "User не найден!";
-        }catch (Exception e){
+        } catch (Exception e) {
             return "Произошла ошибка при добавлении объявления: " + announcement;
         }
     }
@@ -40,7 +42,7 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
                 }
             }
             return "Announcement not found!";
-        }catch (Exception e){
+        } catch (Exception e) {
             return "Произошла ошибка при обновлении объявления: " + announcementId;
         }
     }
@@ -52,27 +54,29 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
                 for (Announcement announcement : user.getAnnouncements()) {
                     if (announcement.getId().equals(announcementId)) {
                         user.getAnnouncements().remove(announcement);
+                        return "Announcement success deleted!";
                     }
                 }
             }
-            return "Announcement success deleted!";
-        }catch (Exception e){
-            return "Произошла ошибка при удалении объявления: " +  announcementId;
+            throw new StackOverflowException("Произошла ошибка при удалении объявления: " + announcementId);
+        } catch (StackOverflowException e) {
+            System.out.println(e.getMessage());
+            return "";
         }
     }
-
     @Override
-    public List<Announcement> getAllAnnouncements() {
+    public List<Announcement> getAllAnnouncements(Long userId) {
         try {
-            List<Announcement> announcements = new ArrayList<>();
-            for (User user : Database.users) {
-                announcements.addAll(user.getAnnouncements());
-            }
-            return announcements;
-        } catch (Exception e) {
-            return Collections.emptyList();
+            Optional<User> userOptional = Database.users.stream()
+                    .filter(user -> user.getId().equals(userId))
+                    .findFirst();
+            if (userOptional.isPresent()) {
+                return userOptional.get().getAnnouncements();
+            } else
+                throw new StackOverflowException("User по id:" + userId + "не найдено");
+        } catch (StackOverflowException e) {
+            System.out.println(e.getMessage());
+            return null;
         }
     }
-
-
 }

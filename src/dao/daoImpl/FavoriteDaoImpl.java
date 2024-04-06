@@ -11,58 +11,72 @@ import java.util.Optional;
 
 public class FavoriteDaoImpl implements FavoriteDao {
     @Override
-    public String addFavorite(Long userId, Favorite favorite) throws StackOverflowException {
-        Optional<User> userToUpdate = Database.users.stream()
-                .filter(user -> user.getId().equals(userId))
-                .findFirst();
-        if (userToUpdate.isPresent()) {
-            User user = userToUpdate.get();
-            user.getFavorites().add(favorite);
-            return "Успешно добавлено! ✅";
-        } else {
-            throw new StackOverflowException("Андай ID менен user табылган жок! ❌");
+    public String addFavorite(Long userId, Favorite favorite) {
+        try {
+            Optional<User> userToUpdate = Database.users.stream()
+                    .filter(user -> user.getId().equals(userId))
+                    .findFirst();
+            if (userToUpdate.isPresent()) {
+                User user = userToUpdate.get();
+                user.getFavorites().add(favorite);
+                return "Успешно добавлено! ✅";
+            } else
+                throw new StackOverflowException("Андай ID менен user табылган жок! ❌");
+        } catch (StackOverflowException e) {
+            System.out.println(e.getMessage());
+            return "";
         }
     }
 
     @Override
-    public String deleteFavorite(Long favoriteId) throws StackOverflowException {
-        Optional<User> userWithFavorite = Database.users.stream()
-                .filter(user -> user.getFavorites().stream()
-                        .anyMatch(favorite -> favorite.getId().equals(favoriteId)))
-                .findFirst();
-        if (userWithFavorite.isPresent()) {
-            User user = userWithFavorite.get();
-            user.getFavorites().removeIf(favorite -> favorite.getId().equals(favoriteId));
-            return "Успешно удалено! ✅";
-        } else {
-            throw new StackOverflowException("Фаворит с таким ID не существует! ❌");
+    public String deleteFavorite(Long favoriteId) {
+        try {
+            Optional<User> userWithFavorite = Database.users.stream()
+                    .filter(user -> user.getFavorites().stream()
+                            .anyMatch(favorite -> favorite.getId().equals(favoriteId)))
+                    .findFirst();
+            if (userWithFavorite.isPresent()) {
+                User user = userWithFavorite.get();
+                user.getFavorites().removeIf(favorite -> favorite.getId().equals(favoriteId));
+                return "Успешно удалено! ✅";
+            } else
+                throw new StackOverflowException("Фаворит с таким ID не существует! ❌");
+        } catch (StackOverflowException e) {
+            System.out.println(e.getMessage());
+            return "";
         }
     }
 
     @Override
-    public Favorite getFavoriteById(Long favoriteId) throws StackOverflowException {
-        Optional<Favorite> favorite = Database.users.stream()
-                .flatMap(user -> user.getFavorites().stream())
-                .filter(f -> f.getId().equals(favoriteId))
-                .findFirst();
-
-        if (favorite.isPresent()) {
-            return favorite.get();
-        } else {
-            throw new StackOverflowException("Фаворит с таким ID не найден! ❌");
+    public Favorite getFavoriteById(Long favoriteId) {
+        try {
+            Optional<Favorite> favorite = Database.users.stream()
+                    .flatMap(user -> user.getFavorites().stream())
+                    .filter(f -> f.getId().equals(favoriteId))
+                    .findFirst();
+            if (favorite.isPresent()) {
+                return favorite.get();
+            } else
+                throw new StackOverflowException("Фаворит с таким ID не найден! ❌");
+        } catch (StackOverflowException e) {
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 
     @Override
-    public List<Favorite> getAllFavoritesByUserId(Long userId) throws StackOverflowException {
-        Optional<User> user = Database.users.stream()
-                .filter(u -> u.getId().equals(userId))
-                .findFirst();
-
-        if (user.isPresent()) {
-            return user.get().getFavorites();
-        } else {
-            throw new StackOverflowException("Андай ID деги user жок! ❌");
+    public List<Favorite> getAllFavoritesByUserId(Long userId) {
+        try {
+            Optional<User> user = Database.users.stream()
+                    .filter(u -> u.getId().equals(userId))
+                    .findFirst();
+            if (user.isPresent()) {
+                return user.get().getFavorites();
+            } else
+                throw new StackOverflowException("Андай ID деги user жок! ❌");
+        } catch (StackOverflowException e) {
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 }
