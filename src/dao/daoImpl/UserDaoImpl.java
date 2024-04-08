@@ -24,7 +24,7 @@ public class UserDaoImpl implements UserDao {
             if (userOptional.isPresent()) {
                 return userOptional.get();
             } else
-                throw new StackOverflowException("Пользователь с id: " + userId + " не найдено! ❌");
+                throw new StackOverflowException("Пользователь с id: " + userId + " не найден! ❌");
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
         }
@@ -48,9 +48,9 @@ public class UserDaoImpl implements UserDao {
                 user.setEmail(newUser.getEmail());
                 user.setPassword(newUser.getPassword());
                 user.setPhoneNumber(newUser.getPhoneNumber());
-                return "Пользователь успешно обновлено!:✅ "+user;
+                return "Пользователь успешно обновлен! ✅";
             } else
-                throw new StackOverflowException("Пользователь c id: " + userId + " не найдено! ❌");
+                throw new StackOverflowException("Пользователь c id: " + userId + " не найден! ❌");
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
 
@@ -69,7 +69,7 @@ public class UserDaoImpl implements UserDao {
                 Database.users.remove(user);
                 return "Успешно удалено! ✅";
             } else
-                throw new StackOverflowException("Пользователь c id: "+userId + " не найдено! ❌");
+                throw new StackOverflowException("Пользователь c id: " + userId + " не найден! ❌");
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
         }
@@ -77,17 +77,17 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> sortByFirstName(String ascOrdesc) {
+    public List<User> sortByFirstName(String ascOrDesc) {
         try {
-            if (ascOrdesc.equalsIgnoreCase("asc".toLowerCase())) {
+            if (ascOrDesc.equalsIgnoreCase("asc".toLowerCase())) {
                 Database.users.sort(Comparator.comparing(User::getFirstName));
                 return Database.users;
-            } else if (ascOrdesc.equalsIgnoreCase("desc".toLowerCase())) {
+            } else if (ascOrDesc.equalsIgnoreCase("desc".toLowerCase())) {
                 Database.users.sort(Comparator.comparing(User::getFirstName).reversed());
                 return Database.users;
             } else
-                throw new StackOverflowException("Вы должны вести asc/desc а не ето:"+ascOrdesc);
-        }catch (StackOverflowException e){
+                throw new StackOverflowException("Вы должны вести asc/desc а не это:" + ascOrDesc);
+        } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
             return null;
         }
@@ -99,23 +99,23 @@ public class UserDaoImpl implements UserDao {
         try {
             List<User> users = new ArrayList<>();
             List<User> vendor = new ArrayList<>();
-            if (role.equalsIgnoreCase("USER".toUpperCase())) {
+            if (role.equalsIgnoreCase("USER")) {
                 for (User user : Database.users) {
                     if (user.getRole().equals(Role.USER)) {
                         users.add(user);
                     }
                 }
                 return users;
-            } else if (role.equalsIgnoreCase("VENDOR".toUpperCase())) {
+            } else if (role.equalsIgnoreCase("VENDOR")) {
                 for (User user : Database.users) {
-                    if (user.getRole().equals(Role.VENDOR)){
+                    if (user.getRole().equals(Role.VENDOR)) {
                         vendor.add(user);
                     }
                 }
                 return vendor;
-            }else
-                throw new StackOverflowException(role+": такого роля нету уком!❌");
-        }catch (StackOverflowException e){
+            } else
+                throw new StackOverflowException(role + ": такого роля нету! ❌");
+        } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
         }
         return null;
