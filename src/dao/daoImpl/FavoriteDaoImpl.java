@@ -21,7 +21,7 @@ public class FavoriteDaoImpl implements FavoriteDao {
                 user.getFavorites().add(favorite);
                 return "Успешно добавлено! ✅";
             } else
-                throw new StackOverflowException("Пользватель с таким id: "+userId+" не найден! ❌");
+                throw new StackOverflowException("Пользватель с таким id: " + userId + " не найден! ❌");
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
             return "";
@@ -40,7 +40,7 @@ public class FavoriteDaoImpl implements FavoriteDao {
                 user.getFavorites().removeIf(favorite -> favorite.getId().equals(favoriteId));
                 return "Успешно удалено! ✅";
             } else
-                throw new StackOverflowException("Фаворит с таким id: "+favoriteId+" не существует! ❌");
+                throw new StackOverflowException("Фаворит с таким id: " + favoriteId + " не существует! ❌");
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
             return "";
@@ -57,7 +57,7 @@ public class FavoriteDaoImpl implements FavoriteDao {
             if (favorite.isPresent()) {
                 return favorite.get();
             } else
-                throw new StackOverflowException("Фаворит с таким id: "+favoriteId+" не существует! ❌");
+                throw new StackOverflowException("Фаворит с таким id: " + favoriteId + " не существует! ❌");
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
             return null;
@@ -73,7 +73,7 @@ public class FavoriteDaoImpl implements FavoriteDao {
             if (user.isPresent()) {
                 return user.get().getFavorites();
             } else
-                throw new StackOverflowException("Пользователь с таким id: "+userId+" не существует! ❌");
+                throw new StackOverflowException("Пользователь с таким id: " + userId + " не существует! ❌");
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
             return null;

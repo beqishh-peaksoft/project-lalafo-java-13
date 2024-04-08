@@ -12,15 +12,14 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     @Override
     public String addUserAnnouncement(Long userId, Announcement announcement) {
         try {
-            for (User user : Database.users) {
-                if (user.getId().equals(userId)) {
-                    user.setAnnouncement(announcement);
-                    return "Объявление упешно добавлено!";
-                }
-            }
-            throw new StackOverflowException("Произошла ошибка при добавлении объявления: " + announcement);
+            Database.users.stream()
+                    .filter(x -> x.getId().equals(userId))
+                    .findFirst()
+                    .orElseThrow(() -> new StackOverflowException("Произошла ошибка при добавлении объявления: " + announcement.getName()))
+                    .setAnnouncement(announcement);
+            return "Объявление успешно добавлено!";
         } catch (StackOverflowException e) {
-            return "";
+            return e.getMessage();
         }
     }
 
@@ -28,49 +27,46 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     public String updateAnnouncement(Long announcementId, Announcement newAnnouncement) {
         try {
             for (User user : Database.users) {
-                for (Announcement announcement : user.getAnnouncements()) {
-                    if (announcement.getId().equals(announcementId)) {
-                        announcement.setName(newAnnouncement.getName());
-                        announcement.setDescription(newAnnouncement.getDescription());
-                        announcement.setPrice(newAnnouncement.getPrice());
-                        announcement.setOwner(newAnnouncement.getOwner());
+                for (int i = 0; i < user.getAnnouncements().size(); i++) {
+                    if (user.getAnnouncements().get(i).getId().equals(announcementId)) {
+                        user.getAnnouncements().set(i, newAnnouncement);
                         return "Объявление успешно обновлено!";
                     }
                 }
             }
-            throw new StackOverflowException("Произошла ошибка при обновлении объявления: " + announcementId);
+            throw new StackOverflowException("Объявление с id: " + announcementId + " не найден!");
         } catch (StackOverflowException e) {
-            return "";
+            return e.getMessage();
         }
     }
 
     @Override
     public String deleteAnnouncement(Long announcementId) {
         try {
+            boolean isRemoved = false;
+
             for (User user : Database.users) {
-                for (Announcement announcement : user.getAnnouncements()) {
-                    if (announcement.getId().equals(announcementId)) {
-                        user.getAnnouncements().remove(announcement);
-                        return "Объявление успешно удалено!";
-                    }
-                }
+                isRemoved = user.getAnnouncements().removeIf(x -> x.getId().equals(announcementId));
             }
-            throw new StackOverflowException("Произошла ошибка при удалении объявления: " + announcementId);
+
+            if (isRemoved) {
+                return "Объявление успешно удалено!";
+            } else {
+                throw new StackOverflowException("Объявление с id: " + announcementId + " не найден!");
+            }
         } catch (StackOverflowException e) {
-            System.out.println(e.getMessage());
-            return "";
+            return e.getMessage();
         }
     }
+
     @Override
     public List<Announcement> getAllAnnouncements(Long userId) {
         try {
-            Optional<User> userOptional = Database.users.stream()
-                    .filter(user -> user.getId().equals(userId))
-                    .findFirst();
-            if (userOptional.isPresent()) {
-                return userOptional.get().getAnnouncements();
-            } else
-                throw new StackOverflowException("Пользователь по id: " + userId + " не найдено! ❌");
+            return Database.users.stream()
+                    .filter(x -> x.getId().equals(userId))
+                    .findFirst()
+                    .orElseThrow(() -> new StackOverflowException("Пользователь c id: " + userId + " не найден! ❌"))
+                    .getAnnouncements();
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
             return null;
@@ -78,36 +74,36 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     }
 
     @Override
-    public List<Announcement> sortByName(String ascOrdesc) {
+    public List<Announcement> sortByName(String ascOrDesc) {
         try {
             for (User user : Database.users) {
-                if (ascOrdesc.equalsIgnoreCase("asc".toLowerCase())) {
+                if (ascOrDesc.equalsIgnoreCase("asc")) {
                     user.getAnnouncements().sort(Comparator.comparing(Announcement::getName));
                     return user.getAnnouncements();
-                } else if (ascOrdesc.equalsIgnoreCase("desc".toLowerCase())) {
+                } else if (ascOrDesc.equalsIgnoreCase("desc")) {
                     user.getAnnouncements().sort(Comparator.comparing(Announcement::getName).reversed());
                     return user.getAnnouncements();
                 } else
-                    throw new StackOverflowException("Вы должны ввести asc/desc а не это: " + ascOrdesc+"! ❌");
+                    throw new StackOverflowException("Вы можете ввести только asc/desc! ❌");
             }
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
         }
-            return null;
+        return null;
     }
 
     @Override
-    public List<Announcement> sortByPrice(String ascOrdesc) {
+    public List<Announcement> sortByPrice(String ascOrDesc) {
         try {
             for (User user : Database.users) {
-                if (ascOrdesc.equalsIgnoreCase("asc".toLowerCase())) {
+                if (ascOrDesc.equalsIgnoreCase("asc".toLowerCase())) {
                     user.getAnnouncements().sort(Comparator.comparing(Announcement::getPrice));
                     return user.getAnnouncements();
-                } else if (ascOrdesc.equalsIgnoreCase("desc".toLowerCase())) {
+                } else if (ascOrDesc.equalsIgnoreCase("desc".toLowerCase())) {
                     user.getAnnouncements().sort(Comparator.comparing(Announcement::getPrice).reversed());
                     return user.getAnnouncements();
                 } else
-                    throw new StackOverflowException("Вы должны ввести asc/desc а не это: " + ascOrdesc+"! ❌");
+                    throw new StackOverflowException("Вы должны ввести asc/desc а не это: " + ascOrDesc + "! ❌");
             }
         } catch (StackOverflowException e) {
             System.out.println(e.getMessage());
